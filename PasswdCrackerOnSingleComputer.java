@@ -13,7 +13,7 @@ public class PasswdCrackerOnSingleComputer {
 	private static int max = 6;
 	
 	// the Hash value
-	private static String knowHash = "202cb962ac59075b964b07152d234b70";
+	private static String knowHash = "bf108cb8a45d0b79d79e75e6742a72af";
 	// the algorithm name
 	private static String algoName = "MD5";
 	
@@ -26,7 +26,7 @@ public class PasswdCrackerOnSingleComputer {
 			'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y',
 			'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
 			'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y',
-			'Z', '-', '_', '?', '!', '@', '$' };
+			'Z'};
 
 	public static void main(String[] args) {
 		/*
