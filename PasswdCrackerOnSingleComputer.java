@@ -5,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-public class PermutationGenerator {
+public class PasswdCrackerOnSingleComputer {
 
 	// the minimum length of password
 	private static int min = 2;
