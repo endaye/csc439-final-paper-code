@@ -5,12 +5,16 @@ import java.io.FileNotFoundException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 public class PasswdCracker {
 	private String dictionaryPath;
 	private String knowHashFilePath;
 	private String saltFilePath = null;
 	private boolean saltCase;
+	private static long startTime;
+	private static long endTime;
 
 	// Use this constructor when there is no salt value
 	public PasswdCracker(String dictionaryPath,String knowHashFilePath,boolean saltCase){
@@ -120,24 +124,28 @@ public class PasswdCracker {
 		Scanner fileScanner = new Scanner(new File(this.dictionaryPath));
 		while (fileScanner.hasNextLine()){
 			String guessPass = fileScanner.nextLine();
+			//System.out.println(guessPass);
 			guessPass = guessPass.replaceAll("(\\r|\\n|\\s+)", "");
 			byte [] gPass = guessPass.getBytes();
-
+			
 			if(!saltCase){
 				if(crackPassword(gPass, knownHash, algoName)){
-					System.out.println("Password Cracked - \n" + this.knowHashFilePath + ": \t" + guessPass);
+					System.out.println("Password Cracked - " + this.knowHashFilePath + "\n" 
+					+ algoName + ": \t" + knownHash + " \t" + guessPass);
 					fileScanner.close();
 					return guessPass;
 				}	
 			}else{
 				byte [] saltVal = getSaltVal(this.saltFilePath);;
 				if(crackPassword(createSaltPwd(gPass, saltVal),knownHash,algoName)){
-					System.out.println("Password Cracked - \n" + this.knowHashFilePath + ": \t" + guessPass);
+					System.out.println("Password Cracked - " + this.knowHashFilePath + "\n" 
+							+ algoName + ": \t" + knownHash + " \t" + guessPass);
 					fileScanner.close();
 					return guessPass;
 				}
 				if(crackPassword(createSaltPwd(saltVal, gPass),knownHash,algoName)){
-					System.out.println("Password Cracked - \n" + this.knowHashFilePath + ": \t" + guessPass);
+					System.out.println("Password Cracked - " + this.knowHashFilePath + "\n" 
+							+ algoName + ": \t" + knownHash + " \t" + guessPass);
 					fileScanner.close();
 					return guessPass;
 				}	
@@ -163,13 +171,46 @@ public class PasswdCracker {
 		PasswdCracker pcwsalt1 = new PasswdCracker(dictionaryPath, SknowHashFilePath1, saltFilePath, true);
 		PasswdCracker pcwsalt2 = new PasswdCracker(dictionaryPath, SknowHashFilePath2, saltFilePath, true);
 		PasswdCracker pcwsalt3 = new PasswdCracker(dictionaryPath, SknowHashFilePath3, saltFilePath, true);
+		
 		try {
+			/*
+			 * Calculate the running time of my program
+			 * http://stackoverflow.com/questions/5204051/how-to-calculate-the-running-time-of-my-program
+			 */
+			long sT;
+			startTime = System.currentTimeMillis();
 			pcwosalt1.crackPassword();
-			/*pcwosalt2.crackPassword();
+			endTime   = System.currentTimeMillis();
+			sT = startTime;
+			NumberFormat formatter = new DecimalFormat("#0.000");
+			System.out.println("Execution time is " + formatter.format((endTime - startTime) / 1000d) + " seconds\n");
+			/*
+			startTime = endTime;
+			pcwosalt2.crackPassword();
+			endTime   = System.currentTimeMillis();
+			System.out.println("Execution time is " + formatter.format((endTime - startTime) / 1000d) + " seconds\n");
+			
+			startTime = endTime;
 			pcwosalt3.crackPassword();
+			endTime   = System.currentTimeMillis();
+			System.out.println("Execution time is " + formatter.format((endTime - startTime) / 1000d) + " seconds\n");
+			
+			startTime = endTime;
 			pcwsalt1.crackPassword();
-			pcwsalt2.crackPassword();
-			pcwsalt3.crackPassword();*/
+			endTime   = System.currentTimeMillis();
+			System.out.println("Execution time is " + formatter.format((endTime - startTime) / 1000d) + " seconds\n");
+			
+			startTime = endTime;
+			pcwsalt1.crackPassword();
+			endTime   = System.currentTimeMillis();
+			System.out.println("Execution time is " + formatter.format((endTime - startTime) / 1000d) + " seconds\n");
+			
+			startTime = endTime;
+			pcwsalt1.crackPassword();
+			endTime   = System.currentTimeMillis();
+			System.out.println("Execution time is " + formatter.format((endTime - startTime) / 1000d) + " seconds\n");
+			*/
+			System.out.println("Execution total time is " + formatter.format((endTime - sT) / 1000d) + " seconds\n");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
